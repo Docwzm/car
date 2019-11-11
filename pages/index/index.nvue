@@ -1,0 +1,132 @@
+<template>
+	<view class="index-wrap">
+		<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+			<swiper-item>
+				<view class="swiper-item">A</view>
+			</swiper-item>
+			<swiper-item>
+				<view class="swiper-item">B</view>
+			</swiper-item>
+			<swiper-item>
+				<view class="swiper-item">C</view>
+			</swiper-item>
+		</swiper>
+
+		<view class="tabs-wrap">
+			<uni-segmented-control :current="currentTab" :values="tabs" :style-type="styleType" :active-color="activeColor"
+			 @clickItem="changeItem" />
+		</view>
+
+		<view class="selector-wrap">
+			<view @click="getListInfo(currentTab,'all')">all</view>
+			<view @click="gotoSelector">selector</view>
+		</view>
+
+		<view class="list-wrap">
+			<view v-show="currentTab === 0">
+				<publish :data="publishData" @call="call('110')"></publish>
+			</view>
+			<view v-show="currentTab === 1">
+				test1
+			</view>
+		</view>
+	</view>
+</template>
+<script>
+	import uniSegmentedControl from '@/components/uni-segmented-control/uni-segmented-control.vue'
+	import publish from '@/components/publish/publish.vue'
+	import {
+		getP2cList,
+		getC2pList
+	} from '@/apis'
+
+	export default {
+		components: {
+			uniSegmentedControl,
+			publish
+		},
+		data() {
+			return {
+				tabs: ['tst1', 'test2'],
+				currentTab: 0,
+				activeColor: '#007aff',
+				styleType: 'button',
+				indicatorDots: true,
+				autoplay: true,
+				interval: 2000,
+				duration: 500,
+				publishData: {
+					start: 'start',
+					end: 'end',
+					time: '11:20',
+					name: 'name',
+					bakup: 'bakup'
+				}
+			}
+		},
+		onLoad() {
+			this.getListInfo(this.currentTab)
+		},
+		methods: {
+			getListInfo(type,params) {
+				getP2cList().then(res => {
+
+				})
+			},
+			gotoSelector() {
+				uni.navigateTo({
+					url:'/pages/selector/index'
+				})
+			},
+			changeItem(index) {
+				if (this.currentTab !== index) {
+					this.currentTab = index
+					this.getListInfo(index)
+				}
+			},
+			call(phone) {
+				uni.makePhoneCall({
+					phoneNumber: phone
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	@import '@/styles/mixin.scss';
+
+	page {
+		background: #eee;
+	}
+	
+	.swiper {
+		height: 300upx;
+	}
+	.swiper-item {
+		display: block;
+		height: 300upx;
+		line-height: 300upx;
+		text-align: center;
+	}
+
+	.tabs-wrap {
+		margin: 30upx 0;
+	}
+
+	.selector-wrap {
+		background: #fff;
+		display: flex;
+		flex-direction: row;
+		@include uni-border-bottom(#c8c7cc);
+
+		view {
+			display: block;
+			height: 100upx;
+			line-height: 100upx;
+			width: 50%;
+			text-align: center;
+			@include uni-border-right(#c8c7cc);
+		}
+	}
+</style>

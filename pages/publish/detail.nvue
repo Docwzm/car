@@ -1,0 +1,85 @@
+<template>
+	<view class="publish-detail-wrap">
+		
+		<view class="tabs-wrap">
+			<uni-segmented-control :current="currentTab" :values="tabs" :style-type="styleType" :active-color="activeColor"
+			 @clickItem="changeItem" />
+		</view>
+		
+		<view class="list-wrap">
+			<view v-show="currentTab === 0">
+				<publish :data="publishData" canCancel="true" @cancel="cancel('110')"></publish>
+			</view>
+			<view v-show="currentTab === 1">
+				test1
+			</view>
+		</view>
+	</view>
+</template>
+<script>
+	import uniSegmentedControl from '@/components/uni-segmented-control/uni-segmented-control.vue'
+	import publish from '@/components/publish/publish.vue'
+	
+	export default {
+		components: {
+			uniSegmentedControl,
+			publish
+		},
+		data() {
+			return {
+				tabs: ['tst1', 'test2'],
+				currentTab: 0,
+				activeColor: '#007aff',
+				styleType: 'button',
+				publishData:{
+					start:'start',
+					end:'end',
+					time:'11:20',
+					name:'name',
+					bakup:'bakup'
+				}
+			}
+		},
+		onLoad() {
+			
+		},
+		methods: {
+			changeItem(index) {
+				if (this.currentTab !== index) {
+					this.currentTab = index
+				}
+			},
+			cancel(id){
+				console.log('cancel')
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	@import '@/styles/mixin.scss';
+	
+	page {
+		background: #eee;
+	}
+
+	.tabs-wrap {
+		margin: 30upx 0;
+	}
+	
+	.selector-wrap{
+		background: #fff;
+		display: flex;
+		flex-direction: row;
+		@include uni-border-bottom(#c8c7cc);
+		
+		view{
+			display: block;
+			height:100upx;
+			line-height: 100upx;
+			width:50%;
+			text-align: center;
+			@include uni-border-right(#c8c7cc);
+		}
+	}
+</style>

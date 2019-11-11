@@ -1,0 +1,116 @@
+<template>
+	<view class="center">
+		<view class="logo" :hover-class="!userInfo ? 'logo-hover' : ''">
+			<view class="logo-title" v-if="userInfo">
+				<open-data class="logo-img" type="userAvatarUrl"></open-data>
+				<open-data type="userNickName"></open-data>
+				<button open-type="getUserInfo" @getuserinfo="getUserInfo">同步</button>
+			</view>
+			<view v-else>
+				<button open-type="getUserInfo" @getuserinfo="getUserInfo">你尚未登陆，请授权登陆</button>
+			</view>
+		</view>
+		<view class="center-list">
+			<uni-collapse>
+				<uni-collapse-item title="test" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png" :show-animation="true">
+					<view class="list">
+						<navigator url="/pages/publish/detail" hover-class="navigator-hover">
+							<uni-icon color="#bbb" size="20" type="arrowright" />
+							<text>test11</text>
+						</navigator>
+					</view>
+				</uni-collapse-item>
+				<uni-collapse-item @itemClick="gotoSetting" :hide-arrow="true" title="setting" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png">
+				</uni-collapse-item>
+			</uni-collapse>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		getUserInfo
+	} from '@/common/util'
+	import uniIcon from '@/components/uni-icon/uni-icon.vue'
+	import uniCollapse from '@/components/uni-collapse/uni-collapse.vue'
+	import uniCollapseItem from '@/components/uni-collapse-item/uni-collapse-item.vue'
+
+	export default {
+		components: {
+			uniCollapse,
+			uniCollapseItem,
+			uniIcon
+		},
+		data() {
+			return {
+				userInfo: null
+			}
+		},
+		mounted() {
+			this.userInfo = getUserInfo()
+		},
+		methods: {
+			getUserInfo(e) {
+				this.userInfo = e.detail.userInfo
+				getApp().globalData.userInfo = e.detail.userInfo
+				uni.setStorageSync('userInfo',e.detail.userInfo)
+			},
+			gotoSetting() {
+				uni.navigateTo({
+					url: '/pages/setting/index'
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
+		background: #f5f5f5;
+	}
+
+	.center {
+		flex: auto;
+	}
+
+	.logo {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 100upx 0;
+		background: #2F85FC;
+	}
+
+	.logo-img {
+		width: 100upx;
+		height: 100upx;
+		border-radius: 50%;
+	}
+
+	.logo-title {
+		text-align: center;
+		color: #fff;
+	}
+
+	.list {
+		navigator {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			padding: 30upx 0 30upx 40upx;
+			border-bottom: 1upx solid #ccc;
+
+			text {
+				margin-left: 20upx;
+			}
+
+			&:last-child {
+				border-bottom: 0;
+			}
+		}
+	}
+</style>

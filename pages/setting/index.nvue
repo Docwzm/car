@@ -1,0 +1,44 @@
+<template>
+	<view class="setting-list-wrap">
+		<uni-list>
+			<uni-list-item @click="authorize" title="authorize" />
+			<uni-list-item @click="clearCache" title="clearCache" />
+		</uni-list>
+	</view>
+</template>
+
+<script>
+	import uniList from '@/components/uni-list/uni-list.vue'
+	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+	
+	export default {
+		name:'setting',
+		components: {
+			uniList,
+			uniListItem
+		},
+		data() {
+			return {
+				
+			}
+		},
+		methods:{
+			authorize(){
+				uni.openSetting({
+					
+				})
+			},
+			clearCache(){
+				try{
+					uni.clearStorageSync()
+				}catch(e){
+					
+				}
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+</style>

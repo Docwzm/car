@@ -1,0 +1,52 @@
+{
+	"pages": [{
+		"path": "pages/index/index",
+		"style": {}
+	}, {
+		"path": "pages/publish/index",
+		"style": {}
+	}, {
+		"path": "pages/publish/detail",
+		"style": {}
+	},{
+		"path": "pages/selector/index",
+		"style": {}
+	}, {
+		"path": "pages/ucenter/index",
+		"style": {
+			"navigationBarTitleText": "个人中心",
+			"backgroundColor": "#ffffff"
+		}
+	}, {
+		"path": "pages/setting/index",
+		"style": {}
+	}],
+	"tabBar": {
+		"color": "#000000",
+		"selectedColor": "#2F85FC",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/home.png",
+			"selectedIconPath": "static/home-active.png",
+			"text": "test1"
+		}, {
+			"pagePath": "pages/publish/index",
+			"iconPath": "static/center.png",
+			"selectedIconPath": "static/center-active.png",
+			"text": "test2"
+		}, {
+			"pagePath": "pages/ucenter/index",
+			"iconPath": "static/center.png",
+			"selectedIconPath": "static/center-active.png",
+			"text": "test3"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "te",
+		"navigationBarBackgroundColor": "#2F85FC",
+		"backgroundColor": "#FFFFFF"
+	}
+}

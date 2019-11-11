@@ -1,0 +1,243 @@
+<template>
+	<view class="publish-wrap">
+		<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
+		 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
+
+		<view class="tabs-wrap">
+			<uni-segmented-control :current="currentTab" :values="tabs" :style-type="styleType" :active-color="activeColor"
+			 @clickItem="changeItem" />
+		</view>
+
+		<view class="content">
+			<view v-show="currentTab === 0">
+				<form @submit="formSubmit" @reset="formReset">
+					<view class="wrap">
+						<view class="input-wrap">
+							<uni-icon type="location" color="green" size="20" />
+							<view class="tag">start</view>
+							<input disabled @click="chooseLocation('start')" class="uni-input" name="locationStart" placeholder="start" :value="locationStart" />
+						</view>
+						<view class="input-wrap">
+							<uni-icon type="location" color="red" size="20" />
+							<view class="tag">end</view>
+							<input disabled @click="chooseLocation('end')" class="uni-input" name="locationEnd" placeholder="end" :value="locationEnd" />
+						</view>
+						<view class="input-wrap">
+							<uni-icon type="time" color="red" size="20" />
+							<view class="tag">time-to-go</view>
+							<view class="right">
+								<picker name="time" mode="time" :value="time" start="09:01" end="21:01" @change="bindTimeChange">
+									<view class="uni-input">{{time}}</view>
+								</picker>
+							</view>
+						</view>
+					</view>
+
+					<view class="wrap">
+						<view class="input-wrap">
+							<uni-icon type="person" color="red" size="20" />
+							<view class="tag">name</view>
+							<input name="name" placeholder="name" />
+						</view>
+						<view class="input-wrap">
+							<uni-icon type="sex" color="red" size="20" />
+							<view class="tag">sex</view>
+							<radio-group class="right" name="gender">
+								<label>
+									<radio value="男" />meal</label>
+								<label>
+									<radio value="女" />femeal</label>
+							</radio-group>
+						</view>
+						<view class="input-wrap">
+							<uni-icon type="phone" color="red" size="20" />
+							<view class="tag">phoneNumber</view>
+							<input name="phone" placeholder="phone" type="number" />
+						</view>
+					</view>
+
+					<view class="wrap">
+						<view class="input-wrap">
+							<uni-icon type="person" color="red" size="20" />
+							<view class="tag">percents</view>
+							<input name="person" placeholder="percentCount" type="number" />
+						</view>
+						<view class="textarea-wrap">
+							<view class="tag">bakup</view>
+							<textarea name="backup" auto-height />
+						</view>
+					</view>
+					
+					<view class="btn-wrap">
+						<button formType="submit" type="primary">Submit</button>
+					</view>
+					
+				</form>
+			</view>
+			
+			<view v-show="currentTab === 1">
+				test
+			</view>
+		</view>
+	</view>
+</template>
+<script>
+	import uniSegmentedControl from '@/components/uni-segmented-control/uni-segmented-control.vue'
+	import uniIcon from '@/components/uni-icon/uni-icon.vue'
+	import validator from '@/common/validator.js'
+	import {
+		createPublisher
+	} from '@/apis'
+
+	export default {
+		components: {
+			uniSegmentedControl,
+			uniIcon
+		},
+		data() {
+			return {
+				locationStart: '',
+				locationEnd: '',
+				tabs: ['tst1', 'test2'],
+				currentTab: 0,
+				activeColor: '#007aff',
+				styleType: 'button',
+				time:'11:21'
+			}
+		},
+		onLoad() {
+
+		},
+		methods: {
+			bindTimeChange(e) {
+				this.time = e.target.value
+			},
+			changeItem(index) {
+				if (this.currentTab !== index) {
+					this.currentTab = index
+				}
+			},
+			chooseLocation(type) {
+				uni.chooseLocation({
+					success: (res) => {
+						if (type === 'start') {
+							this.locationStart = res.address + ' ' + res.name
+						} else {
+							this.locationEnd = res.address + ' ' + res.name
+						}
+
+					}
+				})
+			},
+			formSubmit(e) {
+				//定义表单规则
+				var rule = [{
+						name: "locationStart",
+						checkType: "notnull",
+						checkRule: "",
+						errorMsg: "please input the start location"
+					},{
+						name: "locationEnd",
+						checkType: "notnull",
+						checkRule: "",
+						errorMsg: "please input the end location"
+					},{
+						name: "time",
+						checkType: "notnull",
+						checkRule: "",
+						errorMsg: ""
+					},{
+						name: "name",
+						checkType: "string",
+						checkRule: "1,3",
+						errorMsg: "姓名应为1-3个字符"
+					},
+					{
+						name: "gender",
+						checkType: "in",
+						checkRule: "男,女",
+						errorMsg: "请选择性别"
+					},
+					{
+						name: "phone",
+						checkType: "notnull",
+						checkRule: "",
+						errorMsg: ""
+					},
+					{
+						name: "percent",
+						checkType: "notnull",
+						checkRule: "",
+						errorMsg: ""
+					}
+				];
+				//进行表单检查
+				var formData = e.detail.value;
+				console.log(formData)
+				return false
+				var checkRes = validator.check(formData, rule);
+				if (checkRes) {
+					uni.showToast({
+						title: "验证通过!",
+						icon: "none"
+					});
+					createPublisher(data).then(res).then(res => {
+						
+					})
+				} else {
+					uni.showToast({
+						title: validator.error,
+						icon: "none"
+					});
+				}
+			},
+			formReset: function(e) {
+				console.log("清空数据")
+				this.chosen = ''
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		background: #eee;
+	}
+	.tabs-wrap{
+		margin:30upx 0;
+	}
+	.wrap{
+		margin-bottom:30upx;
+		.input-wrap{
+			&:last-child{
+				border:none;
+			}
+		}
+	}
+	.input-wrap {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		background:#fff;
+		border-bottom:1upx solid #ccc;
+		padding:10upx 30upx;
+		
+		input,.right{
+			height:90upx;
+			line-height: 90upx;
+			flex:auto;
+			text-align: right;
+		}
+	}
+	.textarea-wrap{
+		background:#fff;
+		height:100upx;
+		padding:10upx 30upx;
+	}
+	.btn-wrap{
+		margin-top:30upx;
+	}
+	picker{
+		height:100%;
+	}
+</style>
