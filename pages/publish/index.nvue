@@ -1,6 +1,6 @@
 <template>
 	<view class="publish-wrap">
-		<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
+		<mpvue-picker ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
 		 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
 
 		<view class="tabs-wrap">
@@ -15,7 +15,8 @@
 						<view class="input-wrap">
 							<uni-icon type="location" color="green" size="20" />
 							<view class="tag">start</view>
-							<input disabled @click="chooseLocation('start')" class="uni-input" name="locationStart" placeholder="start" :value="locationStart" />
+							<input disabled @click="chooseLocation('start')" class="uni-input" name="locationStart" placeholder="start"
+							 :value="locationStart" />
 						</view>
 						<view class="input-wrap">
 							<uni-icon type="location" color="red" size="20" />
@@ -23,7 +24,7 @@
 							<input disabled @click="chooseLocation('end')" class="uni-input" name="locationEnd" placeholder="end" :value="locationEnd" />
 						</view>
 						<view class="input-wrap">
-							<uni-icon type="time" color="red" size="20" />
+							<uni-icon type="person" color="red" size="20" />
 							<view class="tag">time-to-go</view>
 							<view class="right">
 								<picker name="time" mode="time" :value="time" start="09:01" end="21:01" @change="bindTimeChange">
@@ -40,9 +41,9 @@
 							<input name="name" placeholder="name" />
 						</view>
 						<view class="input-wrap">
-							<uni-icon type="sex" color="red" size="20" />
+							<uni-icon type="person" color="red" size="20" />
 							<view class="tag">sex</view>
-							<radio-group class="right" name="gender">
+							<radio-group class="right gender-radio-group" name="gender">
 								<label>
 									<radio value="男" />meal</label>
 								<label>
@@ -60,12 +61,12 @@
 						<view class="input-wrap">
 							<uni-icon type="person" color="red" size="20" />
 							<view class="tag">percents</view>
-							<input name="person" placeholder="percentCount" type="number" />
+							<input disabled @click="showPersonPicker" name="person" placeholder="percentCount" :value="personCount" />
 						</view>
 						<view class="textarea-wrap">
 							<view class="tag">bakup</view>
-							<textarea name="backup" auto-height />
-						</view>
+							<textarea name="backup" />
+							</view>
 					</view>
 					
 					<view class="btn-wrap">
@@ -82,15 +83,18 @@
 	</view>
 </template>
 <script>
+	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
 	import uniSegmentedControl from '@/components/uni-segmented-control/uni-segmented-control.vue'
 	import uniIcon from '@/components/uni-icon/uni-icon.vue'
 	import validator from '@/common/validator.js'
 	import {
 		createPublisher
 	} from '@/apis'
+	import {getPickerRange} from '@/common/util.js'
 
 	export default {
 		components: {
+			mpvuePicker,
 			uniSegmentedControl,
 			uniIcon
 		},
@@ -102,13 +106,32 @@
 				currentTab: 0,
 				activeColor: '#007aff',
 				styleType: 'button',
-				time:'11:21'
+				time:'11:21',
+				personCount:0,
+				mode: '',
+				deepLength: 1,
+				pickerValueDefault: [0],
+				pickerValueArray:[]
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
+			showPersonPicker(){
+				console.log(this.$refs)
+				this.pickerValueArray = getPickerRange('person')
+				this.mode = 'selector'
+				this.deepLength = 1
+				this.pickerValueDefault = [0]
+				this.$refs.mpvuePicker.show()
+			},
+			onConfirm(e) {
+				this.personCount = e.value[0]
+			},
+			onCancel(e){
+				
+			},
 			bindTimeChange(e) {
 				this.time = e.target.value
 			},
@@ -231,13 +254,25 @@
 	}
 	.textarea-wrap{
 		background:#fff;
-		height:100upx;
 		padding:10upx 30upx;
+		textarea{
+			height:200upx;
+		}
 	}
 	.btn-wrap{
-		margin-top:30upx;
+		margin:30upx 0;
+		button{
+			width:100%;
+			border-radius: 0;
+			background:#007aff;
+		}
 	}
 	picker{
 		height:100%;
+	}
+	.gender-radio-group{
+		label{
+			margin-left:20upx;
+		}
 	}
 </style>

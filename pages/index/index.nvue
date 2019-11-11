@@ -24,10 +24,10 @@
 
 		<view class="list-wrap">
 			<view v-show="currentTab === 0">
-				<publish :data="publishData" @call="call('110')"></publish>
+				<publish v-for="(item,index) in publishCarData" :key="index" :data="item" @call="call('110')"></publish>
 			</view>
 			<view v-show="currentTab === 1">
-				test1
+				<publish v-for="(item,index) in publishPerData" :key="index" :data="item" @call="call('110')"></publish>
 			</view>
 		</view>
 	</view>
@@ -55,13 +55,31 @@
 				autoplay: true,
 				interval: 2000,
 				duration: 500,
-				publishData: {
-					start: 'start',
-					end: 'end',
-					time: '11:20',
-					name: 'name',
-					bakup: 'bakup'
-				}
+				publishCarData:[
+					{
+						start: '测试测试startstartstartfdastartstartstartfda测试',
+						end: 'endstartstartstartfdastartstartstartfda',
+						time: '11:20',
+						name: 'name',
+						bakup: 'bakup'
+					},
+					{
+						start: 'start',
+						end: 'end',
+						time: '11:20',
+						name: 'name',
+						bakup: 'bakup'
+					}
+				],
+				publishPerData:[
+					{
+						start: 'start',
+						end: 'end',
+						time: '11:20',
+						name: 'name',
+						bakup: 'bakup'
+					}
+				]
 			}
 		},
 		onLoad() {
@@ -112,6 +130,10 @@
 
 	.tabs-wrap {
 		margin: 30upx 0;
+	}
+	
+	.list-wrap{
+		padding-bottom:20upx;
 	}
 
 	.selector-wrap {

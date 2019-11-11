@@ -4,7 +4,7 @@
 			<view class="logo-title" v-if="userInfo">
 				<open-data class="logo-img" type="userAvatarUrl"></open-data>
 				<open-data type="userNickName"></open-data>
-				<button open-type="getUserInfo" @getuserinfo="getUserInfo">同步</button>
+				<button open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
 			</view>
 			<view v-else>
 				<button open-type="getUserInfo" @getuserinfo="getUserInfo">你尚未登陆，请授权登陆</button>
@@ -12,7 +12,7 @@
 		</view>
 		<view class="center-list">
 			<uni-collapse>
-				<uni-collapse-item title="test" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png" :show-animation="true">
+				<uni-collapse-item title="test" icon="info" :show-animation="true">
 					<view class="list">
 						<navigator url="/pages/publish/detail" hover-class="navigator-hover">
 							<uni-icon color="#bbb" size="20" type="arrowright" />
@@ -20,7 +20,7 @@
 						</navigator>
 					</view>
 				</uni-collapse-item>
-				<uni-collapse-item @itemClick="gotoSetting" :hide-arrow="true" title="setting" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png">
+				<uni-collapse-item @itemClick="gotoSetting" :hide-arrow="true" title="setting" icon="gear-filled">
 				</uni-collapse-item>
 			</uni-collapse>
 		</view>

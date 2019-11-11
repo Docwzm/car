@@ -2,7 +2,12 @@
 	<view class="publish-wrap">
 		<view class="top">
 			<view class="start">{{data.start}}</view>
-			<view class="time">{{data.time}}</view>
+			<view class="time-wrap">
+				<uni-icon type="arrowthinright" size="30" />
+				<view class="time">
+					{{data.time}}
+				</view>
+			</view>
 			<view class="end">{{data.end}}</view>
 		</view>
 		<view class="bottom">
@@ -18,8 +23,13 @@
 	</view>
 </template>
 <script>
+	import uniIcon from '../uni-icon/uni-icon.vue'
+	
 	export default {
 		name: 'publish',
+		components:{
+			uniIcon,
+		},
 		props: {
 			canCancel: {
 				type: Boolean,
@@ -56,10 +66,11 @@
 	.top {
 		padding: 50upx 40upx;
 		@include uni-border-bottom(#c8c7cc) text-align: center;
-
+		
 		.start,
 		.end {
-			flex: 2;
+			flex:2;
+			word-break: break-all;
 		}
 
 		.start {

@@ -8,10 +8,10 @@
 		
 		<view class="list-wrap">
 			<view v-show="currentTab === 0">
-				<publish :data="publishData" canCancel="true" @cancel="cancel('110')"></publish>
+				<publish v-for="(item,index) in publishCarData" :key="index" :data="item" canCancel="true" @cancel="cancel('110')"></publish>
 			</view>
 			<view v-show="currentTab === 1">
-				test1
+				<publish v-for="(item,index) in publishPerData" :key="index" :data="item" canCancel="true" @cancel="cancel('110')"></publish>
 			</view>
 		</view>
 	</view>
@@ -31,13 +31,31 @@
 				currentTab: 0,
 				activeColor: '#007aff',
 				styleType: 'button',
-				publishData:{
-					start:'start',
-					end:'end',
-					time:'11:20',
-					name:'name',
-					bakup:'bakup'
-				}
+				publishCarData:[
+					{
+						start: 'start',
+						end: 'end',
+						time: '11:20',
+						name: 'name',
+						bakup: 'bakup'
+					},
+					{
+						start: 'start',
+						end: 'end',
+						time: '11:20',
+						name: 'name',
+						bakup: 'bakup'
+					}
+				],
+				publishPerData:[
+					{
+						start: 'start',
+						end: 'end',
+						time: '11:20',
+						name: 'name',
+						bakup: 'bakup'
+					}
+				]
 			}
 		},
 		onLoad() {

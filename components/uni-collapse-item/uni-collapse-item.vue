@@ -5,6 +5,7 @@
 			<view v-if="thumb" class="uni-collapse-cell__title-extra">
 				<image :src="thumb" class="uni-collapse-cell__title-img" />
 			</view>
+			<uni-icon v-if="icon" :type="icon" size="20" />
 			<view class="uni-collapse-cell__title-inner">
 				<view class="uni-collapse-cell__title-text">{{ title }}</view>
 			</view>
@@ -61,6 +62,11 @@
 			},
 			thumb: {
 				// 缩略图
+				type: String,
+				default: ''
+			},
+			icon: {
+				// 小图标
 				type: String,
 				default: ''
 			}
