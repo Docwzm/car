@@ -1,23 +1,23 @@
 <template>
 	<view class="publish-wrap">
 		<view class="top">
-			<view class="start">{{data.start}}</view>
+			<view class="start">{{data.startaddress}}</view>
 			<view class="time-wrap">
 				<uni-icon type="arrowthinright" size="30" />
 				<view class="time">
-					{{data.time}}
+					{{data.starttime}}
 				</view>
 			</view>
-			<view class="end">{{data.end}}</view>
+			<view class="end">{{data.targetaddress}}</view>
 		</view>
 		<view class="bottom">
 			<view class="left">
 				<view class="name-wrap">name：{{data.name}}</view>
-				<view class="bakup-wrap">bakup：{{data.bakup}}</view>
+				<view class="bakup-wrap">bakup：{{data.remark}}</view>
 			</view>
 			<view class="right">
-				<button v-if="canCancel" type="primary" @click="cancel">cancel</button>
-				<button v-else type="primary" @click="call">call</button>
+				<button v-if="canCancel" type="primary" @click="cancel">删除</button>
+				<button v-else type="primary" @click="call">约ta</button>
 			</view>
 		</view>
 	</view>

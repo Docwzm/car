@@ -18,17 +18,12 @@
 		</view>
 
 		<view class="selector-wrap">
-			<view @click="getListInfo(currentTab,'all')">all</view>
-			<view @click="gotoSelector">selector</view>
+			<view @click="getListInfo(currentTab,'all')">全部</view>
+			<view @click="gotoSelector">筛选</view>
 		</view>
 
 		<view class="list-wrap">
-			<view v-show="currentTab === 0">
-				<publish v-for="(item,index) in publishCarData" :key="index" :data="item" @call="call('110')"></publish>
-			</view>
-			<view v-show="currentTab === 1">
-				<publish v-for="(item,index) in publishPerData" :key="index" :data="item" @call="call('110')"></publish>
-			</view>
+				<publish v-for="(item,index) in list" :key="index" :data="item" @call="call(item.phone)"></publish>
 		</view>
 	</view>
 </template>
@@ -36,8 +31,8 @@
 	import uniSegmentedControl from '@/components/uni-segmented-control/uni-segmented-control.vue'
 	import publish from '@/components/publish/publish.vue'
 	import {
-		getP2cList,
-		getC2pList
+		getOrderList,
+		delOrder
 	} from '@/apis'
 
 	export default {
@@ -47,7 +42,7 @@
 		},
 		data() {
 			return {
-				tabs: ['tst1', 'test2'],
+				tabs: ['人找车', '车找人'],
 				currentTab: 0,
 				activeColor: '#007aff',
 				styleType: 'button',
@@ -55,7 +50,7 @@
 				autoplay: true,
 				interval: 2000,
 				duration: 500,
-				publishCarData:[
+				list:[
 					{
 						start: '测试测试startstartstartfdastartstartstartfda测试',
 						end: 'endstartstartstartfdastartstartstartfda',
@@ -70,15 +65,6 @@
 						name: 'name',
 						bakup: 'bakup'
 					}
-				],
-				publishPerData:[
-					{
-						start: 'start',
-						end: 'end',
-						time: '11:20',
-						name: 'name',
-						bakup: 'bakup'
-					}
 				]
 			}
 		},
@@ -86,9 +72,10 @@
 			this.getListInfo(this.currentTab)
 		},
 		methods: {
-			getListInfo(type,params) {
-				getP2cList().then(res => {
-
+			getListInfo(type) {
+				getOrderList(type+1).then(res => {
+					console.log(res)
+					this.list = res
 				})
 			},
 			gotoSelector() {
@@ -103,6 +90,7 @@
 				}
 			},
 			call(phone) {
+				console.log(phone)
 				uni.makePhoneCall({
 					phoneNumber: phone
 				})

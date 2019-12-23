@@ -2,34 +2,37 @@ import {
   request
 } from "../common/request.js";
 
-const SERVICE_NAME = "/";
+const SERVICE_NAME = "";
 
-const getP2cList = (data) => {
+const getOrderList = (type) => {
   return request({
-    url: SERVICE_NAME + "",
-    method: "post",
-    data
-  })
-}
-
-const getC2pList = (data) => {
-  return request({
-    url: SERVICE_NAME + "",
-    method: "post",
-    data
+    url: SERVICE_NAME + "/order/findByType",
+    qs:{
+		type
+	}
   })
 }
 
 const createPublisher = (data) => {
   return request({
-    url: SERVICE_NAME + "",
+    url: SERVICE_NAME + "/order/add/v1",
     method: "post",
     data
   })
 }
 
+const delOrder = (id) => {
+  return request({
+    url: SERVICE_NAME + "/order/delete/v1",
+    method: "post",
+    data:{
+		id
+	}
+  })
+}
+
 export {
-	getP2cList,
-	getC2pList,
-	createPublisher
+	getOrderList,
+	createPublisher,
+	delOrder
 }

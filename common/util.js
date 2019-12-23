@@ -89,6 +89,17 @@ const getPickerRange = (type) => {
 				}
 				return pickerArray
 			}
+		case 'type':
+				{
+					let pickerArray = [];
+					for (let x = 1; x < 3; x++) {
+						pickerArray.push({
+							label: x==1?'人找车':'车找人',
+							value: x
+						})
+					}
+					return pickerArray
+				}
 		default:
 			return []
 	}

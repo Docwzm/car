@@ -12,15 +12,15 @@
 		</view>
 		<view class="center-list">
 			<uni-collapse>
-				<uni-collapse-item title="test" icon="info" :show-animation="true">
+				<uni-collapse-item title="拼车" icon="info" :show-animation="true">
 					<view class="list">
 						<navigator url="/pages/publish/detail" hover-class="navigator-hover">
 							<uni-icon color="#bbb" size="20" type="arrowright" />
-							<text>test11</text>
+							<text>我的发布</text>
 						</navigator>
 					</view>
 				</uni-collapse-item>
-				<uni-collapse-item @itemClick="gotoSetting" :hide-arrow="true" title="setting" icon="gear-filled">
+				<uni-collapse-item @itemClick="gotoSetting" :hide-arrow="true" title="设置" icon="gear-filled">
 				</uni-collapse-item>
 			</uni-collapse>
 		</view>

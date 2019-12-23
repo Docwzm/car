@@ -1,23 +1,31 @@
 <template>
 	<view class="selector-wrap">
+		<mpvue-picker ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
+		 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
+		
 		<form @submit="formSubmit">
 			<view class="wrap">
 				<view class="input-wrap">
 					<uni-icon type="location" color="green" size="20" />
-					<view class="tag">start</view>
-					<input @focus="chooseLocation('start')" class="uni-input" name="locationStart" placeholder="start" :value="locationStart" />
+					<view class="tag">出发地</view>
+					<input @focus="chooseLocation('start')" class="uni-input" name="startaddress" placeholder="请选择出发地址" :value="startaddress" />
 				</view>
 				<view class="input-wrap">
 					<uni-icon type="location" color="red" size="20" />
-					<view class="tag">end</view>
-					<input @focus="chooseLocation('end')" class="uni-input" name="locationEnd" placeholder="end" :value="locationEnd" />
+					<view class="tag">目的地</view>
+					<input @focus="chooseLocation('end')" class="uni-input" name="targetaddress" placeholder="请选择到达地址" :value="targetaddress" />
 				</view>
 				<view class="input-wrap">
-					<uni-icon type="time" color="red" size="20" />
-					<view class="tag">time-to-go</view>
+					<uni-icon type="person" color="red" size="20" />
+					<view class="tag">类型</view>
+					<input disabled @click="showPicker('type')" name="type" :value="tabs[type]" />
+				</view>
+				<view class="input-wrap">
+					<uni-icon type="date" color="red" size="20" />
+					<view class="tag">出发日期</view>
 					<view class="right">
-						<picker name="time" mode="time" :value="time" start="09:01" end="21:01" @change="bindTimeChange">
-							<view class="uni-input">{{time}}</view>
+						<picker name="date" mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
+							<view class="uni-input">{{date}}</view>
 						</picker>
 					</view>
 				</view>
@@ -26,13 +34,13 @@
 			<view class="wrap">
 				<view class="input-wrap">
 					<uni-icon type="person" color="red" size="20" />
-					<view class="tag">percents</view>
-					<input name="person" placeholder="percentCount" type="number" />
+					<view class="tag">人数</view>
+					<input name="personnum" :value="personnum" @click="showPicker('person')" placeholder="人数" type="number" />
 				</view>
 			</view>
 					
 				<view class="btn-wrap">
-					<button formType="submit" type="primary">Submit</button>
+					<button formType="submit" type="primary">提交</button>
 				</view>
 			</form>
 		</view>
@@ -40,33 +48,99 @@
 </template>
 <script>
 	import validator from '@/common/validator.js'
-
+	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
+import {getPickerRange} from '@/common/util.js'
 	export default {
 		name:'selector',
+		components: {
+			mpvuePicker
+			},
 		data() {
 			return {
-				locationStart: '',
-				locationEnd: '',
-				tabs: ['tst1', 'test2'],
-				currentTab: 0,
+				type:0,
+				startaddress: '',
+				targetaddress: '',
+				tabs: ['人找车', '车找人'],
 				activeColor: '#007aff',
 				styleType: 'button',
-				time:'11:21'
+				date:this.getDate({
+            format: true
+        }),
+		personnum:0,
+				mode: '',
+				deepLength: 1,
+				pickerValueDefault: [0],
+				pickerValueArray:[],
 			}
 		},
 		onLoad() {
 
 		},
+		computed: {
+		        startDate() {
+		            return this.getDate('start');
+		        },
+		        endDate() {
+		            return this.getDate('end');
+		        }
+		    },
 		methods: {
+			getDate(type) {
+			            const date = new Date();
+			            let year = date.getFullYear();
+			            let month = date.getMonth() + 1;
+			            let day = date.getDate();
+			
+			            if (type === 'start') {
+			                year = year - 60;
+			            } else if (type === 'end') {
+			                year = year + 2;
+			            }
+			            month = month > 9 ? month : '0' + month;;
+			            day = day > 9 ? day : '0' + day;
+			            return `${year}-${month}-${day}`;
+			        },
+					showPicker(type){
+						console.log(this.$refs)
+						this._type=type;
+						this.pickerValueArray = getPickerRange(type)
+						this.mode = 'selector'
+						this.deepLength = 1
+						this.pickerValueDefault = [0]
+						this.$refs.mpvuePicker.show()
+					},
+					onConfirm(e) {
+						if(this._type=='person'){
+							this.personnum = e.value[0]
+						}else{
+							this.type = e.value[0]
+						}
+						
+					},
+					bindDateChange (e) {
+						this.date = e.target.value
+					},
+					chooseLocation(type) {
+						uni.chooseLocation({
+							success: (res) => {
+								if (type === 'start') {
+									this.startaddress = res.address + ' ' + res.name
+								} else {
+									this.targetaddress = res.address + ' ' + res.name
+								}
+					
+							}
+						})
+					},
 			formSubmit(e) {
 				//定义表单规则
 				var rule = [{
-						name: "locationStart",
+						name: "startaddress",
 						checkType: "notnull",
 						checkRule: "",
 						errorMsg: "please input the start location"
 					},{
-						name: "locationEnd",
+						name: "targetaddress",
 						checkType: "notnull",
 						checkRule: "",
 						errorMsg: "please input the end location"
@@ -149,6 +223,9 @@
 			line-height: 90upx;
 			flex:auto;
 			text-align: right;
+		}
+		.tag{
+			margin-right: 20upx;
 		}
 	}
 	.textarea-wrap{

@@ -30,17 +30,17 @@
 			"pagePath": "pages/index/index",
 			"iconPath": "static/home.png",
 			"selectedIconPath": "static/home-active.png",
-			"text": "test1"
+			"text": "拼车"
 		}, {
 			"pagePath": "pages/publish/index",
 			"iconPath": "static/center.png",
 			"selectedIconPath": "static/center-active.png",
-			"text": "test2"
+			"text": "发布"
 		}, {
 			"pagePath": "pages/ucenter/index",
 			"iconPath": "static/center.png",
 			"selectedIconPath": "static/center-active.png",
-			"text": "test3"
+			"text": "我的"
 		}]
 	},
 	"globalStyle": {
